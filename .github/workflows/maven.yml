@@ -38,3 +38,7 @@ jobs:
 #      uses: docker://aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825
 #    - name: Build with Maven
 #      run: mvn -B package --file pom.xml
+    - name: Print Resource 2
+      run: |
+        sh print_resource.sh
+        echo ${GITHUB_WORKSPACE}
