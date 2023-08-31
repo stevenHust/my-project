@@ -15,7 +15,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build_java:
     runs-on: ubuntu-latest
 #    container: aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825
     steps:
@@ -24,21 +24,33 @@ jobs:
       run: |
         sh print_resource.sh
         echo ${GITHUB_WORKSPACE}
+        rm -rf /opt/hostedtoolcache
+        sh print_resource.sh
 #    - uses: actions/setup-java@v3
 #      with:
 #        distribution: 'temurin'
 #        java-version: '8'
 #        cache: 'maven'
-    - name: free disk space before starting docker
-      run: |
-        rm -rf /opt/hostedtoolcache
-        docker pull aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825
-        docker run  --net=host --rm -i -m 30000m -v ${GITHUB_WORKSPACE}:/graph_ml -w /graph_ml aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825 mvn -B package --file pom.xml
+#    - name: free disk space before starting docker
+#      run: |
+#        rm -rf /opt/hostedtoolcache
+#        docker pull aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825
+#        docker run  --net=host --rm -i -m 30000m -v ${GITHUB_WORKSPACE}:/graph_ml -w /graph_ml aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825 mvn -B package --file pom.xml
 #    - name: run docker
 #      uses: docker://aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825
 #    - name: Build with Maven
 #      run: mvn -B package --file pom.xml
-    - name: Print python version
-      if: always()
-      run: docker run --net=host --rm -i -m 30000m -v ${GITHUB_WORKSPACE}:/graph_ml -w /graph_ml aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825 python -V
+#    - name: Print python version
+#      if: always()
+#      run: docker run --net=host --rm -i -m 30000m -v ${GITHUB_WORKSPACE}:/graph_ml -w /graph_ml aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825 python -V
 
+  build_python:
+    needs: build_java
+    runs-on: ubuntu-latest
+    container: aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825
+    steps:
+    - uses: actions/checkout@v3    
+    - name: Print Resource
+      run: |
+        sh print_resource.sh
+        echo ${GITHUB_WORKSPACE}
