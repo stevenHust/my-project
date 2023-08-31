@@ -51,4 +51,5 @@ jobs:
     - name: Print python version
       run: |
         sh print_resource.sh
+        rm -rf /opt/hostedtoolcache
         docker run --net=host --rm -i -m 30000m -v ${GITHUB_WORKSPACE}:/graph_ml -w /graph_ml aglimage/agl:agl-ubuntu-gcc9.4.0-py3.8-cuda11.8-pytorch2.0.1-0825 python -V
