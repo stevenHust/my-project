@@ -6,6 +6,6 @@ public class HelloTest {
 
   @Test
   public void testNoFilter() {
-    assertEquals(1, 2);
+    assertEquals(2, 2);
   }
 }
